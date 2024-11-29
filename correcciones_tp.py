@@ -29,7 +29,7 @@ def tp_correction(openai, model, system_prompt, user_prompt):
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
-      ],
+        ],
         response_format={"type": "json_object"}
     )
     result = response.choices[0].message.content
@@ -67,18 +67,15 @@ def process_all_notebooks(path, openai, model, system_prompt, output_file):
     print(f"Results saved in: {output_file}")
 
 def main():
-    # Create the OpenAI object
+    # Load environment variables
     load_dotenv()
     openai = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))  # API key
-    model = 'gpt-4o-mini'  # Selected model
-    tps_path = 'path'  # Path where TPs are stored
-    output_file = "corrections_name.json"  # Name of the final JSON file
+    model = 'your-model'  # Replace with your OpenAI model (e.g., "gpt-4")
+    tps_path = '/path/to/notebooks'  # Replace with the path to your notebooks
+    output_file = "final_results.json"  # Output JSON file name
 
-    tp_correction = process_notebook('/Users/damianilkow/Desktop/Dami/Docencia/MiM/SIyT/correciones_tps/correcto.ipynb')  # Test file
-
-    # Define our system prompt
+    # System prompt for evaluation
     system_prompt = f"""
-    
     You are an expert computer science and analytics professor evaluating student work. Your task is to provide a comprehensive, objective assessment that generates a structured JSON response.
         
         Evaluation Criteria:
@@ -119,8 +116,9 @@ def main():
         - Problem-solving approach
         - Depth of understanding
         - Innovative thinking
-        """
+    """
     
+    # Process all notebooks
     process_all_notebooks(tps_path, openai, model, system_prompt, output_file)
 
 if __name__ == "__main__":
